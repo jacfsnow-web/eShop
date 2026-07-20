@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniSur-eShop | Comercio Electrónico Distribuido</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --surface-color: rgba(22, 28, 45, 0.4);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --secondary: #ec4899;
+            --accent: #14b8a6;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --error-bg: rgba(239, 68, 68, 0.15);
+            --error-text: #fca5a5;
+            --error-border: rgba(239, 68, 68, 0.3);
+            --success-bg: rgba(16, 185, 129, 0.15);
+            --success-text: #a7f3d0;
+            --success-border: rgba(16, 185, 129, 0.3);
+            --glass-blur: blur(16px);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 184, 166, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(11, 15, 25, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Layout & Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 15, 25, 0.6);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--surface-border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px var(--primary-glow));
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #d1d5db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 14px 0 var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: var(--surface-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon {
+            padding: 0.6rem;
+            border-radius: 50%;
+            aspect-ratio: 1;
+        }
+
+        .badge-cart {
+            position: relative;
+        }
+
+        .badge-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--secondary);
+            color: white;
+            font-size: 0.75rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* User Profile Status */
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--surface-border);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+        }
+
+        .user-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        /* Container Main */
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .main-container {
+                grid-template-columns: 3fr 1fr;
+            }
+        }
+
+        /* Cards and Sections */
+        .section-panel {
+            background: var(--surface-color);
+            border: 1px solid var(--surface-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #ffffff, var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.2);
+        }
+
+        .product-card:hover::before {
+            opacity: 0.3;
+        }
+
+        .product-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .product-name {
+            font-size: 1.15rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 3.7em;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .product-stock {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .stock-badge {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .stock-good { background: var(--accent); }
+        .stock-low { background: #fbbf24; }
+        .stock-none { background: #ef4444; }
+
+        /* Cart Sidebar & Checkouts */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.75rem 0;
+            gap: 1rem;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .cart-item-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .cart-item-price {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .cart-summary {
+            margin-top: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .summary-row.total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkout-form {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            padding: 0.6rem 0.8rem;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-glow);
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: rgba(22, 28, 45, 0.95);
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.35rem;
+            color: #ffffff;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .modal-toggle-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .modal-toggle-link {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        /* Order Section (Bottom) */
+        .orders-panel {
+            grid-column: 1 / -1;
+            margin-top: 2rem;
+        }
+
+        .order-table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            color: #ffffff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        tr:hover td {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .order-id {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .order-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            background: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-border);
+        }
+
+        /* Quick Account Selector */
+        .quick-users {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--surface-border);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quick-users-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .quick-users-btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .quick-user-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--surface-border);
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quick-user-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Toast System */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 450px;
+            width: calc(100% - 40px);
+        }
+
+        .toast {
+            background: rgba(22, 28, 45, 0.95);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.error {
+            background: rgba(22, 28, 45, 0.95);
+            border-color: var(--error-border);
+        }
+
+        .toast.success {
+            background: rgba(22, 28, 45, 0.95);
+            border-color: var(--success-border);
+        }
+
+        .toast-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toast-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toast.error .toast-title { color: var(--error-text); }
+        .toast.success .toast-title { color: var(--success-text); }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .toast-body {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .toast-rfc7807 {
+            margin-top: 0.4rem;
+            padding-top: 0.4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div class="logo-container">
+            <i class="fa-solid fa-cubes logo-icon"></i>
+            <span class="logo-text">UniSur-eShop</span>
+        </div>
+        
+        <div class="nav-actions">
+            <!-- User Info Panel -->
+            <div id="userPanel" class="user-status" style="display: none;">
+                <div class="user-status-dot"></div>
+                <span id="userName" style="font-weight: 500;">Invitado</span>
+                <button class="btn btn-secondary btn-icon" id="btnLogout" title="Cerrar Sesión" style="margin-left: 0.5rem; padding: 0.35rem;">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+            
+            <!-- Login Button -->
+            <button class="btn btn-secondary" id="btnAuthTrigger">
+                <i class="fa-solid fa-user-lock"></i> Iniciar Sesión
+            </button>
+
+            <!-- Cart Trigger -->
+            <button class="btn btn-primary badge-cart" id="btnCartTrigger">
+                <i class="fa-solid fa-shopping-bag"></i> Carrito
+                <span class="badge-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-container">
+        
+        <!-- Left Section: Catalog -->
+        <section class="section-panel">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-tags"></i> Catálogo de Productos</h2>
+                <button class="btn btn-secondary" id="btnRefreshCatalog">
+                    <i class="fa-solid fa-rotate"></i> Actualizar
+                </button>
+            </div>
+
+            <!-- Products Listing Grid -->
+            <div class="product-grid" id="catalogGrid">
+                <!-- Loaded dynamically by JS -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p>Cargando catálogo de productos...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Section: Cart Drawer / Checkout Panel -->
+        <section class="section-panel" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-cart-shopping"></i> Tu Compra</h2>
+                <button class="btn btn-secondary btn-icon" id="btnClearCart" title="Vaciar Carrito">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+
+            <!-- Quick Account Selector (for grading/testing convenience) -->
+            <div class="quick-users">
+                <span class="quick-users-title">Acceso Rápido de Prueba</span>
+                <div class="quick-users-btn-group">
+                    <button class="quick-user-btn" onclick="quickLogin('juan.perez@example.com')">Juan Pérez</button>
+                    <button class="quick-user-btn" onclick="quickLogin('admin@unisur.edu.mx')">Admin UniSur</button>
+                </div>
+            </div>
+
+            <!-- Cart Items Container -->
+            <div id="cartItemsContainer" style="max-height: 300px; overflow-y: auto;">
+                <p style="text-align: center; color: var(--text-secondary); padding: 2rem;">El carrito está vacío</p>
+            </div>
+
+            <!-- Cart Totals Summary -->
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="summarySubtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Impuesto (16% IVA)</span>
+                    <span id="summaryTax">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="summaryTotal">$0.00</span>
+                </div>
+            </div>
+
+            <!-- Checkout Info Form -->
+            <div class="checkout-form">
+                <div class="form-group">
+                    <label class="form-label" for="shippingAddress">Dirección de Envío</label>
+                    <textarea class="form-control" id="shippingAddress" rows="2" placeholder="Av. Universidad 120, Col. Centro, México"></textarea>
+                </div>
+                <button class="btn btn-primary" id="btnCheckout" style="width: 100%; justify-content: center; margin-top: 0.5rem;" disabled>
+                    <i class="fa-solid fa-credit-card"></i> Confirmar y Comprar
+                </button>
+            </div>
+        </section>
+
+        <!-- Collapsible Order Panel (Bottom) -->
+        <section class="section-panel orders-panel">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-receipt"></i> Historial de Pedidos Realizados (Order Service)</h2>
+                <button class="btn btn-secondary" id="btnRefreshOrders">
+                    <i class="fa-solid fa-rotate"></i> Actualizar Pedidos
+                </button>
+            </div>
+
+            <div class="order-table-container">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>ID Usuario</th>
+                            <th>Fecha</th>
+                            <th>Dirección Envío</th>
+                            <th>Subtotal</th>
+                            <th>Impuesto</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                No hay pedidos registrados o cargados aún.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Auth (Login & Register) -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="authModalTitle">Iniciar Sesión</h3>
+                <button class="modal-close" id="btnAuthClose"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <!-- Login Form Section -->
+            <div id="loginFormSection">
+                <form id="formLogin" onsubmit="handleLoginForm(event)">
+                    <div class="checkout-form">
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="loginEmail" required placeholder="correo@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="loginPassword" required placeholder="******">
+                        </div>
+                        <button class="btn btn-primary" type="submit" style="justify-content: center; margin-top: 1rem;">
+                            Iniciar Sesión
+                        </button>
+                    </div>
+                </form>
+                <div class="modal-toggle-text">
+                    ¿No tienes cuenta? <span class="modal-toggle-link" onclick="toggleAuthForm(false)">Regístrate</span>
+                </div>
+            </div>
+
+            <!-- Register Form Section -->
+            <div id="registerFormSection" style="display: none;">
+                <form id="formRegister" onsubmit="handleRegisterForm(event)">
+                    <div class="checkout-form">
+                        <div class="form-group">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="regName" required placeholder="Juan Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="regEmail" required placeholder="correo@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="regPassword" required placeholder="mínimo 6 caracteres">
+                        </div>
+                        <button class="btn btn-primary" type="submit" style="justify-content: center; margin-top: 1rem;">
+                            Registrar Cuenta
+                        </button>
+                    </div>
+                </form>
+                <div class="modal-toggle-text">
+                    ¿Ya tienes cuenta? <span class="modal-toggle-link" onclick="toggleAuthForm(true)">Inicia Sesión</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Microservice SDK & Driver scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
